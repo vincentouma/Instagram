@@ -1,4 +1,4 @@
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode
@@ -6,6 +6,7 @@ from .tokens import account_activation_token
 
 def send_activation_email(user, current_site, receiver):
     subject = 'Activate your account'
+    sender = 'vinceobindi@gmail.com'
 
     message = render_to_string('registration/activate.html', {
         'user':user,
@@ -14,5 +15,5 @@ def send_activation_email(user, current_site, receiver):
         'token':account_activation_token.make_token(user),
     })
 
-    email = EmailMessage(subject, message, to=[receiver])
+    email = EmailMultiAlternatives(subject, message, to=[receiver])
     email.send()
