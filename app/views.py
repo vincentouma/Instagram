@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from .models import Image, Profile
+from .models import Image, Profile,Comment
 from django.contrib.auth.models import User
 from .forms import SignupForm, ImageForm, ProfileForm, CommentForm
 from .tokens import account_activation_token
@@ -23,8 +23,7 @@ def pics(request):
 
     return render(request, "insta.html", {"pictures": pictures})
 
-# @login_required(login_url='/accounts/loglin/')
-# def insta(request, article_id):
+
 
 def search(request):
     if 'search' in request.GET and request.GET['search']:
@@ -108,7 +107,7 @@ def add_comment(request,image_id):
             comment.profile = request.user.profile
             comment.image = images
             comment.save()
-    return redirect('insta')
+    return redirect('app')
 
 
 def activate(request, uidb64, token):
