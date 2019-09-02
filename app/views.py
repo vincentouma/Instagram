@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from .models import Image, Profile,Comment
+from .models import Image, Profile,Comments
 from django.contrib.auth.models import User
 from .forms import SignupForm, ImageForm, ProfileForm, CommentForm
 from .tokens import account_activation_token
@@ -98,16 +98,28 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-def add_comment(request,image_id):
-    images = get_object_or_404(Image, pk=image_id)
+@login_required(login_url='/login')
+def comment(request, image_id):
+
+    image = Image.objects.get(id=image_id)
+
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.profile = request.user.profile
-            comment.image = images
-            comment.save()
-    return redirect('app')
+        current_user = request.user
+        form = Comment(request.POST)
+        if form.is_valid:
+            comments = form.save(commit=False)
+            comments.user = current_user
+            comments.picture = image.id
+            comments.save()
+
+            return redirect('insta')
+    else:
+        form = Comment()
+
+    comments = Comments.objects.filter(picture=image_id).all
+
+    return render(request, "comment.html", {'form': form, "image": image, "comments": comments})
+
 
 
 def activate(request, uidb64, token):
