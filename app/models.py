@@ -41,7 +41,7 @@ class Image(models.Model):
     image_name = models.CharField(max_length=60)
     image_caption = models.TextField()
     Profile = models.ForeignKey(User,null=True)
-    likes = models.BooleanField(default=False)
+    likes = models.IntegerField(default=0)
     pub_date = models.DateTimeField(auto_now_add=True)
 
 
@@ -49,6 +49,8 @@ class Image(models.Model):
     def save_image(self):
         self.save()
 
+    def delete_image(self):
+        self.delete() 
 
     @classmethod
     def search_by_profile(cls,search_term):
@@ -59,23 +61,26 @@ class Image(models.Model):
     def pics(cls):
         image = cls.objects.all()
         return image
+
     @classmethod
     def get_profile_images(cls, profile):
         images = Image.objects.filter(Profile__pk = profile)
         return images
 #coment model
-class Comments(models.Model):
-    comment = HTMLField()
-    posted_on = models.DateTimeField(auto_now=True)
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Comment(models.Model):
+    comment = models.CharField(null = True, max_length= 5000, verbose_name = 'name')
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    user = models.ForeignKey(User, null=True)
+    image = models.ForeignKey(Image, null= True)
+
+    class Meta:
+        verbose_name = "comments"
+        verbose_name_plural = "comments"
+        ordering = ['-date']        
 
     def save_comment(self):
         self.save()
 
-    @classmethod
-    def get_comments_by_images(cls, id):
-        comments = Comments.objects.filter(image__pk=id)
-        return comments
-
+    def delete_comment(self):
+        self.delete()
 
