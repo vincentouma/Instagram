@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Image, Profile, Comments
+from .models import Image, Profile, Comment
 
 
 class SignupForm(UserCreationForm):
@@ -13,10 +13,7 @@ class SignupForm(UserCreationForm):
 
 
 class ImageForm(forms.ModelForm):
-    # image_pic = ImageField(widget=FileWidget(attrs={
-    #     'data-cdn-base':'https://cdn.super-candidates.com',
-    #     'data-image-shrink': '800x800',
-    # }))
+    
     class Meta:
         model = Image
         exclude = ['likes', 'post_date', 'Profile']
@@ -30,5 +27,5 @@ class ProfileForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = Comments
+        model = Comment
         exclude = ['image', 'user']
