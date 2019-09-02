@@ -2,17 +2,22 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        
 
-        {% for post in post %}
-            <div class="card" style="width:520px;" >
+            {% for post in post %}
+            <div class="card" style="width:520px; text-align: center;">
                 {{post.profile.user.username }}
-                <div class="container" >
-                <img src="{{post.image.url}}"  width='500' height='500' alt="">
-                    <br>
-                    {{post.image_name}}
-                    <br>
-                posted {{post.pub_date|timesince}} ago
+                <div class="container">
+                    <div class="col-md-4 ">
+                        <div class="thumbnail">
+                            <img src="{{post.image.url}}" width='450px' height='300px' alt="">
+                            <br>
+                            {{post.image_name}}
+                            <br>
+                            posted {{post.pub_date|timesince}} ago
+                        </div>
+                    </div>
+
 
                     <input class="form-control" type="text">
                     <br>
@@ -21,8 +26,8 @@
             </div>
             <br>
             <br>
-        {% endfor %}
-        </div>
+            {% endfor %}
+        
         <div class="col-md-4">
 
         </div>
