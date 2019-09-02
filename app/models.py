@@ -67,20 +67,14 @@ class Image(models.Model):
         images = Image.objects.filter(Profile__pk = profile)
         return images
 #coment model
-class Comment(models.Model):
-    comment = models.CharField(null = True, max_length= 5000, verbose_name = 'name')
-    date = models.DateTimeField(auto_now_add=True, null=True)
-    user = models.ForeignKey(User, null=True)
-    image = models.ForeignKey(Image, null= True)
+class Comments(models.Model):
+    picture = models.IntegerField(default=0)
+    user = models.ForeignKey(User)
+    comments = models.TextField()
 
-    class Meta:
-        verbose_name = "comments"
-        verbose_name_plural = "comments"
-        ordering = ['-date']        
-
-    def save_comment(self):
+    def save_profile(self):
         self.save()
 
-    def delete_comment(self):
+    def delete_profile(self):
         self.delete()
 
