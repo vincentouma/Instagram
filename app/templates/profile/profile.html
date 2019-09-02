@@ -3,13 +3,15 @@
 {{ form.media }}
 <div class="container top">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <div class="row">
                 <div class="col-md-5 profile-image">
-                    {% if profile_details.prof_pic %}
+
+                    {% if profile_details == images %}
                     <img src="{{profile_details.prof_pic.url}}" alt="photo" height="1px">
                     {% else %}
-                    <img src="/static/img/audi.jpg" alt="avatar">
+                    <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKsfh4v3aKVSKs5JVTEBbebU3dv7BvbifhzbZcTuPOmcCHbTy8" alt="avatar"> -->
+
                     {% endif %}
                 </div>
                 <div class="col-md-5 text-center">
@@ -50,8 +52,8 @@
     <hr>
     <div class="row">
         {% for img in images %}
-        <div class="col-md-7 images">
-            <img src="{{img.image.url}}" alt="Image" class="jumbotron">
+        <div class="col-md-4 images">
+            <img src="{{img.image.url}}" alt="Image" class="jumbotron"  width='450px' height='300px'>
         </div>
         {% empty %}
         <div class="col-md-7">
