@@ -11,6 +11,9 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
+class SigninForm(UserCreationForm):
+    email = forms.EmailField(max_length=200, help_text='Required')
+    password = forms.PasswordInput()
 
 class ImageForm(forms.ModelForm):
     

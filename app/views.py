@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from .models import Image, Profile,Comments
 from django.contrib.auth.models import User
-from .forms import SignupForm, ImageForm, ProfileForm, CommentForm
+from .forms import SignupForm, ImageForm, ProfileForm, CommentForm, SigninForm
 from .tokens import account_activation_token
 from django.utils.encoding import force_bytes, force_text
 from django.contrib.sites.shortcuts import get_current_site
@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 
 # Create your views here.
-@login_required(login_url='/login/')
+@login_required(login_url='/accounts/login/')
 def insta(request):
     post = Image.objects.all()
     return render(request,'insta.html',{"post":post})
@@ -50,7 +50,7 @@ def profile(request, username):
     return render(request, 'profile/profile.html', {'title':title, 'profile':profile, 'profile_details':profile_details, 'images':images})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/accounts/login/')
 def upload_image(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
@@ -65,7 +65,7 @@ def upload_image(request):
     return render(request, 'profile/upload_image.html', {'form': form})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/accounts/login/')
 def edit_profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES)
@@ -98,7 +98,7 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-@login_required(login_url='/login')
+@login_required(login_url='/accounts/login/')
 def comment(request, image_id):
 
     image = Image.objects.get(id=image_id)
@@ -132,8 +132,14 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
-        return redirect('insta')
+        login(request)
+        return redirect('login')
         return HttpResponse('Thank you for confirming email. Now login to your account')
     else:
         return HttpResponse('Activation link is invalid')
+
+def login(request):
+        form = SigninForm()
+
+        
+        return render(request, 'registration/login.html', {'form': form})
